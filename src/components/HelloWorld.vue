@@ -1,12 +1,15 @@
 <template>
-  <v-container>
+  <div>
     <div class="topnav">
-      <a class="active" href="/">Home</a>
+      <a class="active" >
+        <router-link to="/" style="padding :0cm">Home</router-link>
+      </a>
       <!-- <a href="/edit">Add User</a> -->
     </div>
     <div>
       <div class="w3-container">
         <h2>List User Table:</h2>
+        
         <table class="w3-table-all w3-hoverable">
           <thead>
             <tr class="w3-light-grey">
@@ -17,60 +20,49 @@
             </tr>
         </thead>
         <tbody>
-          <tr v-for="(user,index) in users" :key="user.id">            
+          <tr v-for="(user,index) in users" :key="index">            
             <td>{{user.id}}</td>
             <td>{{user.first_name}} {{user.last_name}}</td>
             <td>{{user.email}}</td>
             <td class="td" style="display:flex;gap:15px;">             
-                  <button 
-                      class="bt"><a href="/detail" >Detail</a></button>
-                  <button 
-                      class="bt"><a href="/edit" >Edit</a></button>           
+                  <button >
+                    <detail v-bind:currentItem="user" ></detail>
+                  </button>        
+                  <button @click="currentItem = user" >
+                    Edit
+                    </button>           
               <button  @click="deleteUser(index)"
-                  class="bt">Delete</button>
+                  >Delete</button>
               </td>
+              
           </tr>
         </tbody>
         </table>
+        <button > <AddUser v-bind:user="newuser" @add="addItem" ></AddUser> </button>
       </div>
     </div>
-    <div class="create-user-container">
-          <div>
-              Create a New User:
-          </div>
-          <div>
-              <label>ID:</label>
-              <input type="text"  v-model="newid"/>
-          </div>
-          <div>
-              <label>FirstName:</label>
-              <input type="text"  v-model="newfn"/>
-          </div>
-          <div>
-              <label>LasttName:</label>
-              <input type="text" v-model="newln" />
-          </div>
-          <div>
-              <label>Email:</label>
-              <input type="email" v-model="newemail" />
-          </div>
-          <div>
-              <label>Gender:</label>
-              <input type="text" v-model="newgender" />
-          </div>
-          <div>
-              <button type="submit" @click="addUser()"
+      <!-- <Detail v-bind:user="currentItem" @update="updateItem" v-if="currentItem"/> -->
+      
+      <editUsers v-bind:user="currentItem" @save="updateItem" v-if="currentItem"></editUsers>
+    </div>
 
-                  class="btn-submit">Submit</button>
-          </div>
-  </div>
-  </v-container>
 </template>
 
 <script>
+import Detail from './detail.vue'
+import editUsers from './edit.vue'
+import AddUser from './add.vue'
 export default {
   name: 'HelloWorld',
-  
+  props:{
+    
+  },
+  components:{
+    Detail,
+    editUsers,
+    AddUser,
+  },
+   
   data() {
         return {
             users: 
@@ -84,43 +76,49 @@ export default {
               {"id":7,"first_name":"Griffie","last_name":"Izchaki","email":"gizchaki6@google.ca","gender":"Male"},
               {"id":8,"first_name":"Cassandre","last_name":"Parkman","email":"cparkman7@upenn.edu","gender":"Female"},
               {"id":9,"first_name":"Lolita","last_name":"Iacovone","email":"liacovone8@issuu.com","gender":"Female"},
-              {"id":10,"first_name":"Linell","last_name":"Ingleby","email":"lingleby9@mapy.cz","gender":"Female"},
-              {"id":11,"first_name":"Fidelio","last_name":"Harg","email":"fharga@apache.org","gender":"Male"},
-              {"id":12,"first_name":"Ortensia","last_name":"Ridgedell","email":"oridgedellb@addthis.com","gender":"Female"},
-              {"id":13,"first_name":"Salvador","last_name":"Statersfield","email":"sstatersfieldc@photobucket.com","gender":"Male"},
-              {"id":14,"first_name":"Maurizia","last_name":"Mandifield","email":"mmandifieldd@fema.gov","gender":"Female"},
-              {"id":15,"first_name":"Brana","last_name":"Dincke","email":"bdinckee@bbb.org","gender":"Female"}
-            ],
-            newid:"",
-            newfn:"",
-            newln:"",
-            newemail:"",
-            newgender:"", 
+                ],
+            // newid:"",
+            // newfn:"",
+            // newln:"",
+            // newemail:"",
+            // newgender:"", 
+            currentItem: null,
+            newuser:null,
           }
 
     },
     methods:{
+      updateItem(obj){
+        let index = this.users.findIndex(k=>k.id === obj.id);
+        this.users[index] = obj
+        this.currentItem = null;
+      },
+      clickSave(currentItem){
+        this.users.push(currentItem)
+      },
+      addItem(obj){
+        let index = this.users.findIndex(k=>k.id === obj.id);
+        this.users[index] = obj
+        this.newuser = null;
+      },
+      clickAdd(newuser){
+        this.users.push(newuser);
+      },
+      
       deleteUser(user){
         this.users.splice(user,1)
-        // console.log(user)
       },
-      addUser(){
-            if(this.newfn,this.newemail,this.newgender,this.newln,this.newid){
-                this.users.push({
-                    id: this.newid,
-                    first_name:this.newfn,
-                    last_name:this.newln,
-                    email:this.newemail,
-                    gender:this.newgender,
-                }),
-                this.newid = "";
-                this.newfn = "";
-                this.newln = "";
-                this.newemail = "";
-                this.newgender = ""
-            }
-        },
-        
+      // clickAdd(){
+      //   let newuser = {
+      //     id : Math.floor(Math.random() *100),
+      //     first_name : '',
+      //     last_name: '',
+      //     email : '',
+      //     gerder : ' ',
+      //   }
+      //   this.newuser = newuser
+      // }
+      
         
     }
 }
@@ -128,5 +126,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+button {
+  padding: 5px;
+  background: white;
+  color: black;
+  border-radius: 25px;
+  cursor: pointer;
+  margin:0px
+}
 
 </style>
