@@ -4,7 +4,6 @@
       <a class="active">
         <router-link to="/" style="padding: 0cm">Home</router-link>
       </a>
-      <!-- <a href="/edit">Add User</a> -->
     </div>
     <div>
       <div class="w3-container">
@@ -22,7 +21,7 @@
           <tbody>
             <tr v-for="(user, index) in users" :key="index">
               <td>{{ user.id }}</td>
-              <td>{{ user.first_name }} {{ user.last_name }}</td>
+              <td>{{ user.first_name }}</td>
               <td>{{ user.email }}</td>
               <td class="td" style="display: flex; gap: 15px">
                 <button>
@@ -35,7 +34,7 @@
           </tbody>
         </table>
         <button>
-          <AddUser v-bind:user="newuser" @add="AddItem"></AddUser>
+          <AddUser @add="AddItem(newuser)"></AddUser>
         </button>
       </div>
     </div>
@@ -131,6 +130,7 @@ export default {
       ],
 
       currentItem: null,
+      newuser: null,
     };
   },
   methods: {
@@ -143,18 +143,18 @@ export default {
       this.users.splice(user, 1);
     },
     AddItem(newuser) {
-      // if (
-      //   (newuser.first_name, newuser.last_name, newuser.email, newuser.gender)
-      // ) {
-      //   this.users.push({
-      //     id: Math.floor(Math.random() * 100),
-      //     first_name: newuser.first_name,
-      //     last_name: newuser.last_name,
-      //     email: newuser.email,
-      //     gender: newuser.gender,
-      //   });
-      // }
-      this.users.push(newuser);
+      if (
+        (newuser.first_name, newuser.last_name, newuser.email, newuser.gender)
+      ) {
+        this.users.push({
+          id: Math.floor(Math.random() * 100),
+          first_name: newuser.first_name,
+          last_name: newuser.last_name,
+          email: newuser.email,
+          gender: newuser.gender,
+        });
+      }
+      // this.users.push(newuser);
     },
   },
 };
