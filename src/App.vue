@@ -1,39 +1,21 @@
 <template>
-  <div >
-
+  <div>
     <router-link to="/"> </router-link>
     <router-view />
-    <!-- <Detail v-bind:users="users" ></Detail>
-    <Helloworld  v-bind:users="users" />
-    <editUsers v-bind:userss="userss" @save="clickSave" ></editUsers> -->
   </div>
 </template>
 
 <script>
-// import Helloworld from './components/HelloWorld.vue'
-// import Detail from './components/detail.vue'
-import('./assets/style.css')
-import('./assets/w3schools.css')
-// import editUsers from './components/edit.vue'
+import("./assets/style.css");
+import("./assets/w3schools.css");
 export default {
-  name: 'App',
-  components: {
-    // Detail,
-    // Helloworld,
-    // 'editUsers' : editUsers,
-  },
+  name: "App",
+  components: {},
   data() {
-  return {
-    
-        
-  }
-
-    },
-    // copyusers : this.users,
-    methods: {
-      
-    }
-}
+    return {};
+  },
+  methods: {},
+};
 </script>
 
 <style>
